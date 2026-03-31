@@ -44,24 +44,23 @@ Normative **documentation URL** for humans: **`git://relaygateway.net/<repo-name
 
 1. **Propose** a new submodule (PR): set **`url`**, **`path`**, and **`relayRootCommit`** (run `git rev-list --max-parents=0 <branch>` on the trusted clone; if multiple roots exist, pick the canonical root your policy requires and document it).
 2. **Merge** to the tracked branch of **`relay-master`**.
-3. On each relay node, after **clone/pull of `relay-master`** (or unpack of a release that includes it), run:
+3. On each relay node, after **pull of `relay-master`** (checkout must have **`remote.origin`** so **`relay-master.git`** is mirrored under **`RELAY_REPO_PATH`**), run as the user that owns **`RELAY_REPO_PATH`**:
 
 ```bash
-./scripts/sync-relay-catalog.sh
+RELAY_REPO_PATH=/opt/relay/data ./scripts/sync-relay-catalog.sh
+./scripts/sync-relay-catalog.sh --write-authorized-repos relay-atlanta1 /opt/relay/authorized-repos.yaml
 ```
 
-Optional: emit **`authorized-repos.yaml`** for **`relay-server`** (still the enforcement surface in Rust today):
+`--emit-authorized-repos SERVER_ID` prints the same YAML to stdout. **`RELAY_SKIP_RELAY_MASTER_BARE=1`** skips the **`relay-master.git`** mirror (e.g. local dev).
 
-```bash
-./scripts/sync-relay-catalog.sh --emit-authorized-repos relay-atlanta1 > /tmp/catalog-repos.yaml
-# Merge with a stanza for relay-master itself, then install as /opt/relay/authorized-repos.yaml
-```
+**Add a repo (developer machine, needs forge access):** **`./scripts/add-catalog-submodule.sh snesology-library https://gitlab.com/clevertree/snesology-library.git main`** — clones, computes **`relayRootCommit`**, runs **`git submodule add`**, then commit and push.
 
 Set **`RELAY_DEFAULT_REPO=relay-master`** so the node apex serves this repository’s default branch.
 
 ## Files
 
-- **`scripts/sync-relay-catalog.sh`** — Clone or update bare repos from **`.gitmodules`**, verify **`relayRootCommit`**, optional YAML emission.
+- **`scripts/sync-relay-catalog.sh`** — Mirror **`relay-master.git`**, clone/fetch submodule bare repos, verify **`relayRootCommit`**, write full **`authorized-repos.yaml`**.
+- **`scripts/add-catalog-submodule.sh`** — Helper to add a submodule + **`relayRootCommit`** from a fresh clone.
 
 ### Note: `paradigm-threat-files` and multiple roots
 

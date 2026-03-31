@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Clone/update bare mirrors for each submodule in .gitmodules (relay catalog).
-# Requires: git, .gitmodules at repo root (run from relay-master checkout).
+# Also mirrors this repo to RELAY_REPO_PATH/relay-master.git when origin is set.
+# Run from a relay-master checkout (repo root contains .gitmodules).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -13,13 +14,18 @@ fi
 
 RELAY_REPO_PATH="${RELAY_REPO_PATH:-${RELAY_DATA:-/opt/relay/data}}"
 EMIT_YAML=0
+WRITE_YAML_PATH=""
 RELAY_SERVER_ID=""
 
 usage() {
-  echo "Usage: $0 [--emit-authorized-repos SERVER_ID]" >&2
-  echo "  Writes authorized-repos YAML to stdout; per-repo branch comes from .gitmodules submodule.<name>.branch (default main)." >&2
-  echo "  RELAY_REPO_PATH  destination for bare repos (default: /opt/relay/data)" >&2
-  echo "  RELAY_DATA       used if RELAY_REPO_PATH is unset" >&2
+  echo "Usage:" >&2
+  echo "  $0                                    # sync bare mirrors only" >&2
+  echo "  $0 --emit-authorized-repos SERVER_ID # full YAML to stdout (relay-master + submodules)" >&2
+  echo "  $0 --write-authorized-repos SERVER_ID PATH  # write full YAML to PATH (atomic replace)" >&2
+  echo "  RELAY_REPO_PATH   bare repo directory (default: /opt/relay/data)" >&2
+  echo "  RELAY_DATA        used if RELAY_REPO_PATH unset" >&2
+  echo "  RELAY_MASTER_BRANCH  branch name for relay-master stanza if HEAD detached (default: main)" >&2
+  echo "  RELAY_SKIP_RELAY_MASTER_BARE=1  skip mirroring relay-master.git under RELAY_REPO_PATH" >&2
   exit 1
 }
 
@@ -32,8 +38,19 @@ while [[ $# -gt 0 ]]; do
       [[ -z "$RELAY_SERVER_ID" ]] && usage
       shift
       ;;
+    --write-authorized-repos)
+      EMIT_YAML=1
+      shift
+      RELAY_SERVER_ID="${1:-}"
+      WRITE_YAML_PATH="${2:-}"
+      [[ -z "$RELAY_SERVER_ID" || -z "$WRITE_YAML_PATH" ]] && usage
+      shift 2
+      ;;
     -h|--help) usage ;;
-    *) usage ;;
+    *)
+      echo "sync-relay-catalog: unknown option: $1" >&2
+      usage
+      ;;
   esac
 done
 
@@ -59,10 +76,68 @@ verify_root() {
   fi
 }
 
-if [[ "$EMIT_YAML" -eq 1 ]]; then
+relay_master_branch_name() {
+  local b
+  b="$(git -C "$ROOT" rev-parse --abbrev-ref HEAD 2>/dev/null || echo main)"
+  if [[ "$b" == "HEAD" ]]; then
+    echo "${RELAY_MASTER_BRANCH:-main}"
+  else
+    echo "$b"
+  fi
+}
+
+sync_relay_master_mirror() {
+  [[ "${RELAY_SKIP_RELAY_MASTER_BARE:-}" == "1" ]] && return 0
+  local url dest
+  url=$(git -C "$ROOT" remote get-url origin 2>/dev/null || true)
+  if [[ -z "$url" ]]; then
+    echo "sync-relay-catalog: no remote.origin on catalog checkout; skipping relay-master.git mirror" >&2
+    return 0
+  fi
+  dest="${RELAY_REPO_PATH}/relay-master.git"
+  if [[ ! -d "$dest" ]]; then
+    echo "sync-relay-catalog: mirroring relay-master -> $dest"
+    git clone --mirror "$url" "$dest"
+  else
+    echo "sync-relay-catalog: fetching relay-master mirror"
+    git --git-dir="$dest" remote set-url origin "$url" 2>/dev/null || true
+    git --git-dir="$dest" fetch origin "+refs/*:refs/*" --prune
+  fi
+}
+
+emit_full_authorized_repos() {
+  local master_head master_branch bare
+  master_head=$(git -C "$ROOT" rev-parse HEAD)
+  master_branch=$(relay_master_branch_name)
+  bare="${RELAY_REPO_PATH}/relay-master.git"
+
   echo "relay_server_id: ${RELAY_SERVER_ID}"
   echo "repos:"
-fi
+  echo "  relay-master:"
+  echo "    anchor_commit: \"${master_head}\""
+  echo "    branch: ${master_branch}"
+
+  if [[ -d "$bare" ]]; then
+    if ! git --git-dir="$bare" rev-parse --verify "${master_head}^{commit}" >/dev/null 2>&1; then
+      echo "sync-relay-catalog: warning: relay-master.git mirror missing commit ${master_head}" >&2
+    elif ! git --git-dir="$bare" merge-base --is-ancestor "$master_head" "refs/heads/${master_branch}" 2>/dev/null; then
+      echo "sync-relay-catalog: warning: ${master_head} not ancestor of refs/heads/${master_branch} on mirror" >&2
+    fi
+  fi
+
+  while IFS= read -r name; do
+    [[ -z "$name" ]] && continue
+    path=$(git config --file .gitmodules --get "submodule.${name}.path")
+    root=$(git config --file .gitmodules --get "submodule.${name}.relayRootCommit" 2>/dev/null || true)
+    branch=$(git config --file .gitmodules --get "submodule.${name}.branch" 2>/dev/null || echo "main")
+    [[ -z "$path" || -z "$root" ]] && continue
+    echo "  ${name}:"
+    echo "    anchor_commit: \"${root}\""
+    echo "    branch: ${branch}"
+  done < <(list_submodule_names)
+}
+
+sync_relay_master_mirror
 
 while IFS= read -r name; do
   [[ -z "$name" ]] && continue
@@ -91,12 +166,19 @@ while IFS= read -r name; do
   fi
 
   verify_root "$bare" "$root" "$branch"
-
-  if [[ "$EMIT_YAML" -eq 1 ]]; then
-    echo "  ${name}:"
-    echo "    anchor_commit: \"${root}\""
-    echo "    branch: ${branch}"
-  fi
 done < <(list_submodule_names)
+
+if [[ "$EMIT_YAML" -eq 1 ]]; then
+  tmp=""
+  if [[ -n "$WRITE_YAML_PATH" ]]; then
+    tmp=$(mktemp)
+    emit_full_authorized_repos > "$tmp"
+    install -m 0644 "$tmp" "$WRITE_YAML_PATH"
+    rm -f "$tmp"
+    echo "sync-relay-catalog: wrote $WRITE_YAML_PATH" >&2
+  else
+    emit_full_authorized_repos
+  fi
+fi
 
 echo "sync-relay-catalog: done (${RELAY_REPO_PATH})"
