@@ -38,6 +38,7 @@ usage() {
   echo "  RELAY_SKIP_RELAY_MASTER_BARE=1  skip mirroring relay-master.git under RELAY_REPO_PATH" >&2
   echo "  RELAY_CATALOG_CLONE_DEPTH   submodule initial bare clone depth (default: 1)" >&2
   echo "  RELAY_CATALOG_FETCH_DEPTH   fetch depth while bare is shallow (default: clone depth; 0 = full)" >&2
+  echo "  RELAY_CATALOG_AUTO_DEEPEN   if shallow mirror lacks relayRootCommit, fetch --deepen (default: 256)" >&2
   exit 1
 }
 
@@ -202,7 +203,14 @@ while IFS= read -r name; do
     fi
   fi
 
-  verify_root "$bare" "$root" "$branch"
+  if ! verify_root "$bare" "$root" "$branch"; then
+    if bare_is_shallow "$bare"; then
+      echo "sync-relay-catalog: deepening shallow mirror for $name (reach relayRootCommit)..." >&2
+      deepen="${RELAY_CATALOG_AUTO_DEEPEN:-256}"
+      git --git-dir="$bare" fetch origin "+refs/heads/*:refs/heads/*" --prune --deepen="$deepen" || true
+    fi
+    verify_root "$bare" "$root" "$branch"
+  fi
 done < <(list_submodule_names)
 
 if [[ "$EMIT_YAML" -eq 1 ]]; then
