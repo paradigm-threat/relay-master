@@ -1,0 +1,8 @@
+[submodule "paradigm-threat-files"]
+	path = repos/paradigm-threat-files
+	url = https://gitlab.com/clevertree/paradigm-threat-files.git
+	relayRootCommit = 3228be894bdda6c0351f14570dd151d011f92228
+[submodule "paradigm-threat-site"]
+	path = repos/paradigm-threat-site
+	url = https://gitlab.com/clevertree/paradigm-threat-site.git
+	relayRootCommit = 688609b5de5e6fc6b5cc09db9e2e329e8e3808e5
