@@ -53,6 +53,8 @@ RELAY_REPO_PATH=/opt/relay/data ./scripts/sync-relay-catalog.sh
 
 `--emit-authorized-repos SERVER_ID` prints the same YAML to stdout. **`RELAY_SKIP_RELAY_MASTER_BARE=1`** skips the **`relay-master.git`** mirror (e.g. local dev).
 
+**`relay-server`** can read the catalog directly (**`RELAY_MASTER_CATALOG_PATH`**) — then **`--write-authorized-repos`** is unnecessary; still run **`sync-relay-catalog.sh`** (without emit) to refresh bare mirrors under **`RELAY_REPO_PATH`**.
+
 **Add a repo (developer machine, needs forge access):** **`./scripts/add-catalog-submodule.sh snesology-library https://gitlab.com/clevertree/snesology-library.git main`** — clones, computes **`relayRootCommit`**, runs **`git submodule add`**, then commit and push.
 
 Set **`RELAY_DEFAULT_REPO=relay-master`** so the node apex serves this repository’s default branch.
