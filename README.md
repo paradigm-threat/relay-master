@@ -26,6 +26,15 @@ Submodules are not *only* a policy list:
 
 Relay-specific policy is the combination of **`url`** (source of truth for clone) + **`relayRootCommit`** (anti–unrelated-history).
 
+### Public stub + private body (recommended for restricted content)
+
+The forge **`url`** should normally reference a repository whose **first commit is minimal** (e.g. **README-only**). **`scripts/sync-relay-catalog.sh`** defaults to **`git clone --bare --depth 1`** (see **`RELAY_CATALOG_CLONE_DEPTH`**) so nodes pull almost nothing from GitLab/GitHub while **`relayRootCommit`** still pins the allowed root. **Bulk data and private history are not pushed to that forge URL**; operators **`git push`** the full mirror to **`git://<relay>:9418/<name>.git`** after the catalog has created the bare repo.
+
+With **`RELAY_CATALOG_CLONE_DEPTH=1`**, the forge branch must expose **`relayRootCommit`** in that shallow slice (simplest: **one commit** on **`main`** = stub only). If you add more forge commits, increase depth or document **`RELAY_CATALOG_FETCH_DEPTH`**.
+
+- **`scripts/init-minimal-public-catalog-repo.sh`** — create a README-only root commit and print **`relayRootCommit`**.
+- **`scripts/publish-catalog-stub-to-gitlab.sh`** — optional GitLab project create + push (needs **`GITLAB_TOKEN`**).
+
 ## User-facing clone URLs (`git://relaygateway.net/<repo>.git`)
 
 **Git’s native protocol has no HTTP-style redirects.** Publishing a single hostname is a **routing** concern:
@@ -55,14 +64,19 @@ RELAY_REPO_PATH=/opt/relay/data ./scripts/sync-relay-catalog.sh
 
 **`relay-server`** can read the catalog directly (**`RELAY_MASTER_CATALOG_PATH`**) — then **`--write-authorized-repos`** is unnecessary; still run **`sync-relay-catalog.sh`** (without emit) to refresh bare mirrors under **`RELAY_REPO_PATH`**.
 
-**Add a repo (developer machine, needs forge access):** **`./scripts/add-catalog-submodule.sh snesology-library https://gitlab.com/clevertree/snesology-library.git main`** — clones, computes **`relayRootCommit`**, runs **`git submodule add`**, then commit and push.
+**Add a repo (developer machine, needs forge access):** **`./scripts/add-catalog-submodule.sh snesology-library https://gitlab.com/clevertree/your-repo.git main`** — clones, computes **`relayRootCommit`**, runs **`git submodule add`**, then commit and push. For a **stub** remote, create it first with **`init-minimal-public-catalog-repo.sh`** + **`publish-catalog-stub-to-gitlab.sh`** (or push manually), then add the submodule from that URL.
+
+To **register a submodule** whose objects only exist locally until you push the stub, clone via a **`file:`** / relative path once, then rewrite **`.gitmodules`** **`url`** to the HTTPS forge URL:  
+`git -c protocol.file.allow=always submodule add --name REPO ../your-stub-checkout repos/REPO` then **`git config -f .gitmodules submodule.REPO.url https://…`** and **`git submodule sync`**.
 
 Set **`RELAY_DEFAULT_REPO=relay-master`** so the node apex serves this repository’s default branch.
 
 ## Files
 
-- **`scripts/sync-relay-catalog.sh`** — Mirror **`relay-master.git`**, clone/fetch submodule bare repos, verify **`relayRootCommit`**, write full **`authorized-repos.yaml`**.
+- **`scripts/sync-relay-catalog.sh`** — Mirror **`relay-master.git`**, **shallow** clone/fetch submodule bare repos (configurable), verify **`relayRootCommit`**, write full **`authorized-repos.yaml`**.
 - **`scripts/add-catalog-submodule.sh`** — Helper to add a submodule + **`relayRootCommit`** from a fresh clone.
+- **`scripts/init-minimal-public-catalog-repo.sh`** — README-only repo for public catalog **`url`**.
+- **`scripts/publish-catalog-stub-to-gitlab.sh`** — Create GitLab project + push stub (**`GITLAB_TOKEN`**).
 
 ### Note: `paradigm-threat-files` and multiple roots
 

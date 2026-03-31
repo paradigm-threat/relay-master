@@ -8,5 +8,6 @@
 	relayRootCommit = 688609b5de5e6fc6b5cc09db9e2e329e8e3808e5
 [submodule "snesology-library"]
 	path = repos/snesology-library
-	url = https://gitlab.com/clevertree/snesology.git
-	relayRootCommit = 575617a631d00a56561098324bfeb9be4a157e62
+	url = https://gitlab.com/clevertree/snesology-library.git
+	relayRootCommit = 440f92051a0a6806da301f59a432c8a7706ff7b7
+	branch = main

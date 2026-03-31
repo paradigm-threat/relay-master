@@ -2,6 +2,16 @@
 # Clone/update bare mirrors for each submodule in .gitmodules (relay catalog).
 # Also mirrors this repo to RELAY_REPO_PATH/relay-master.git when origin is set.
 # Run from a relay-master checkout (repo root contains .gitmodules).
+#
+# Shallow forge mirrors (default): RELAY_CATALOG_CLONE_DEPTH=1 uses
+#   git clone --bare --depth 1 <url>
+# so public catalog repos can be README-only roots (see RELAY_TRUST_AND_BOOTSTRAP.md).
+# If the forge branch has more than one commit, ensure depth reaches relayRootCommit
+# or set RELAY_CATALOG_CLONE_DEPTH higher. After operators push full history to the
+# bare on the node, fetches become full (non-shallow) automatically.
+#
+# RELAY_CATALOG_FETCH_DEPTH: when the bare is still shallow, pass --depth to fetch
+#   (default: same as RELAY_CATALOG_CLONE_DEPTH). Set to 0 or empty for full fetch.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -26,6 +36,8 @@ usage() {
   echo "  RELAY_DATA        used if RELAY_REPO_PATH unset" >&2
   echo "  RELAY_MASTER_BRANCH  branch name for relay-master stanza if HEAD detached (default: main)" >&2
   echo "  RELAY_SKIP_RELAY_MASTER_BARE=1  skip mirroring relay-master.git under RELAY_REPO_PATH" >&2
+  echo "  RELAY_CATALOG_CLONE_DEPTH   submodule initial bare clone depth (default: 1)" >&2
+  echo "  RELAY_CATALOG_FETCH_DEPTH   fetch depth while bare is shallow (default: clone depth; 0 = full)" >&2
   exit 1
 }
 
@@ -61,6 +73,11 @@ list_submodule_names() {
     | sed -n 's/^submodule\.\(.*\)\.path$/\1/p' | sort -u
 }
 
+bare_is_shallow() {
+  local bare_git_dir=$1
+  [[ "$(git --git-dir="$bare_git_dir" rev-parse --is-shallow-repository 2>/dev/null || echo false)" == "true" ]]
+}
+
 verify_root() {
   local bare_git_dir=$1
   local root_commit=$2
@@ -68,6 +85,11 @@ verify_root() {
   local ref="refs/heads/${branch}"
   if ! git --git-dir="$bare_git_dir" rev-parse --verify "$ref" >/dev/null 2>&1; then
     echo "sync-relay-catalog: missing $ref in $bare_git_dir" >&2
+    return 1
+  fi
+  if ! git --git-dir="$bare_git_dir" cat-file -e "${root_commit}^{commit}" 2>/dev/null; then
+    echo "sync-relay-catalog: relayRootCommit $root_commit not present in shallow mirror $bare_git_dir" >&2
+    echo "sync-relay-catalog: increase RELAY_CATALOG_CLONE_DEPTH / RELAY_CATALOG_FETCH_DEPTH or unshallow the forge branch" >&2
     return 1
   fi
   if ! git --git-dir="$bare_git_dir" merge-base --is-ancestor "$root_commit" "$ref"; then
@@ -156,9 +178,16 @@ while IFS= read -r name; do
   fi
 
   bare="${RELAY_REPO_PATH}/${name}.git"
+  clone_depth="${RELAY_CATALOG_CLONE_DEPTH:-1}"
+  fetch_depth="${RELAY_CATALOG_FETCH_DEPTH:-${RELAY_CATALOG_CLONE_DEPTH:-1}}"
+
   if [[ ! -d "$bare" ]]; then
-    echo "sync-relay-catalog: cloning $name -> $bare"
-    git clone --bare "$url" "$bare"
+    echo "sync-relay-catalog: cloning $name -> $bare (depth=${clone_depth})"
+    if [[ -n "$clone_depth" && "$clone_depth" != "0" ]]; then
+      git clone --bare --depth "$clone_depth" "$url" "$bare"
+    else
+      git clone --bare "$url" "$bare"
+    fi
   else
     echo "sync-relay-catalog: fetching $name"
     if git --git-dir="$bare" remote get-url origin >/dev/null 2>&1; then
@@ -166,7 +195,11 @@ while IFS= read -r name; do
     else
       git --git-dir="$bare" remote add origin "$url"
     fi
-    git --git-dir="$bare" fetch origin "+refs/heads/*:refs/heads/*" --prune
+    if bare_is_shallow "$bare" && [[ -n "$fetch_depth" && "$fetch_depth" != "0" ]]; then
+      git --git-dir="$bare" fetch origin "+refs/heads/*:refs/heads/*" --prune --depth "$fetch_depth"
+    else
+      git --git-dir="$bare" fetch origin "+refs/heads/*:refs/heads/*" --prune
+    fi
   fi
 
   verify_root "$bare" "$root" "$branch"
