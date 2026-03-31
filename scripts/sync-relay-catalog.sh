@@ -161,7 +161,11 @@ while IFS= read -r name; do
     git clone --bare "$url" "$bare"
   else
     echo "sync-relay-catalog: fetching $name"
-    git --git-dir="$bare" remote set-url origin "$url" 2>/dev/null || true
+    if git --git-dir="$bare" remote get-url origin >/dev/null 2>&1; then
+      git --git-dir="$bare" remote set-url origin "$url"
+    else
+      git --git-dir="$bare" remote add origin "$url"
+    fi
     git --git-dir="$bare" fetch origin "+refs/heads/*:refs/heads/*" --prune
   fi
 
