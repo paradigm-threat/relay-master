@@ -53,7 +53,8 @@ Normative **documentation URL** for humans: **`git://relaygateway.net/<repo-name
 Optional: emit **`authorized-repos.yaml`** for **`relay-server`** (still the enforcement surface in Rust today):
 
 ```bash
-./scripts/sync-relay-catalog.sh --emit-authorized-repos relay-atlanta1 main > /opt/relay/authorized-repos.yaml
+./scripts/sync-relay-catalog.sh --emit-authorized-repos relay-atlanta1 > /tmp/catalog-repos.yaml
+# Merge with a stanza for relay-master itself, then install as /opt/relay/authorized-repos.yaml
 ```
 
 Set **`RELAY_DEFAULT_REPO=relay-master`** so the node apex serves this repository’s default branch.
@@ -61,3 +62,7 @@ Set **`RELAY_DEFAULT_REPO=relay-master`** so the node apex serves this repositor
 ## Files
 
 - **`scripts/sync-relay-catalog.sh`** — Clone or update bare repos from **`.gitmodules`**, verify **`relayRootCommit`**, optional YAML emission.
+
+### Note: `paradigm-threat-files` and multiple roots
+
+That upstream repository currently has **two root commits** in history merged together. **`relayRootCommit`** is set to the older initial commit (**`3228be89…`**); **`sync-relay-catalog.sh`** checks that this commit is an **ancestor** of **`main`**, which still pins the allowed lineage for unrelated-history attacks.
