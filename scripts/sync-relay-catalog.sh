@@ -12,6 +12,9 @@
 #
 # RELAY_CATALOG_FETCH_DEPTH: when the bare is still shallow, pass --depth to fetch
 #   (default: same as RELAY_CATALOG_CLONE_DEPTH). Set to 0 or empty for full fetch.
+# RELAY_CATALOG_AUTO_DEEPEN: after a shallow clone, if relayRootCommit is missing from
+#   the object database, run one fetch --deepen N (handles a few extra README commits
+#   on the forge while keeping the initial clone small).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
