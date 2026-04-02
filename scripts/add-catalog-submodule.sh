@@ -25,7 +25,7 @@ fi
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 git clone --depth=500 --branch "$BRANCH" "$URL" "$TMP/clone"
-ROOT_COMMIT=$(git -C "$TMP/clone" rev-list --max-parents=0 "$BRANCH" | head -1)
+ROOT_COMMIT=$(git -C "$TMP/clone" rev-list --max-parents=0 -n 1 "$BRANCH")
 if [[ ${#ROOT_COMMIT} -ne 40 ]]; then
   echo "Could not resolve root commit" >&2
   exit 1
