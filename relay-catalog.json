@@ -1,0 +1,29 @@
+{
+  "repos": {
+    "paradigm-threat-files": {
+      "url": "https://gitlab.com/clevertree/paradigm-threat-files.git",
+      "relayRootCommit": "3228be894bdda6c0351f14570dd151d011f92228",
+      "branch": "main"
+    },
+    "paradigm-threat-site": {
+      "url": "https://gitlab.com/clevertree/paradigm-threat-site.git",
+      "relayRootCommit": "688609b5de5e6fc6b5cc09db9e2e329e8e3808e5",
+      "branch": "main"
+    },
+    "snesology-library": {
+      "url": "https://gitlab.com/clevertree/snesology-library.git",
+      "relayRootCommit": "440f92051a0a6806da301f59a432c8a7706ff7b7",
+      "branch": "main"
+    },
+    "paradigm-threat-timeline": {
+      "url": "https://gitlab.com/clevertree/paradigm-threat-timeline.git",
+      "relayRootCommit": "02e23addbc674c2c296b8df1573f3fdeeb3f893b",
+      "branch": "main"
+    },
+    "songwalker-library": {
+      "url": "https://gitlab.com/clevertree/songwalker-library.git",
+      "relayRootCommit": "7b8dd02d23e0d1c63129723cd495285c0c733702",
+      "branch": "main"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+git:
+  branchRules:
+    branches:
+      - name: "*"
+        rule:
+          requireSigned: true
+          allowUnsigned: false
+          allowedKeys:
+            - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILanag4UriR/4IatVhRxv59gG6/5xEt6ccg/jzINE3R9 relay-catalog-signing"
+      - name: develop
+        rule:
+          allowUnsigned: true
+          requireSigned: false
