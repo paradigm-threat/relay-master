@@ -1,2 +1,2 @@
-# Commit signing private key — never commit (public line lives in .relay.yaml allowedKeys)
+# Legacy in-repo name; private key should live under ~/.ssh/ (see README)
 relay-signing-key

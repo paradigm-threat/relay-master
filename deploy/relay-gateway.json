@@ -1,0 +1,10 @@
+{
+  "relayGateway": {
+    "git_tag": "",
+    "artifact_url": "",
+    "artifact_sha256": "",
+    "reconcile_script": null,
+    "canary_hostname": null,
+    "skip_binary_download": false
+  }
+}

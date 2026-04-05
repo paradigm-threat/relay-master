@@ -2,6 +2,10 @@
 
 Canonical **catalog repository** for Relay deployments: it lists which Git repositories a relay node may mirror and serve, **where to clone them from**, and the **trusted root commit** for each. The same tree is the **default HTTP content** for the node apex when **`RELAY_DEFAULT_REPO=relay-master`** (or equivalent) is configured.
 
+## relay-gateway version (Helm-style)
+
+**[`deploy/`](./deploy/)** holds **`relay-gateway.json`** — desired **relay-gateway** install (Git tag, immutable tarball URL, SHA-256), optional **canary** hostname, and optional **`reconcile_script`**. Masters run **`/opt/relay/bin/relay-reconcile.sh`** on a timer when enabled in **`relay.env`**. This is **separate** from **`relay-catalog.json`** (which repos to mirror). Normative: **`relay-gateway/docs/RELAY_RECONCILE_PLAN.md`**.
+
 ## Whitelist = submodules
 
 Each **[`git submodule`](https://git-scm.com/docs/git-submodules)** entry is one allowlisted repository:
@@ -46,8 +50,21 @@ Normative **documentation URL** for humans: **`git://relaygateway.net/<repo-name
 
 ## Security (today vs planned)
 
-- **Today:** No required commit signing on **`relay-master`**; protect the forge and merge path as you would any ops repo.
-- **Planned:** Require **signed commits** (and/or signed tags) for all changes to **`relay-master`**, so arbitrary actors cannot extend the submodule whitelist without keys you trust.
+- **Relay nodes:** **`git push git://…`** to **`main`** is governed by **`.relay.yaml`** (signed commits + **`allowedKeys`**). **`develop`** may allow unsigned commits per policy.
+- **Forge (GitLab):** use branch protection and review as usual.
+
+### Commit signing (local clone)
+
+Store the **private** key under **`~/.ssh/`** (e.g. **`relay-catalog-signing-ed25519`**), **`ssh-add`** it, then in this repo:
+
+```bash
+git config gpg.format ssh
+git config user.signingkey "$HOME/.ssh/relay-catalog-signing-ed25519.pub"
+git config commit.gpgsign true
+git config merge.gpgsign true
+```
+
+Ordinary commits and merges are **signed automatically**; use **`git commit --no-gpg-sign`** when policy allows unsigned (e.g. **`develop`**). Full detail: **`relay-gateway/docs/RELAY_MASTER_DEPLOY.md`**.
 
 ## Operator workflow
 
@@ -62,7 +79,7 @@ RELAY_REPO_PATH=/opt/relay/data ./scripts/sync-relay-catalog.sh
 
 `--emit-authorized-repos SERVER_ID` prints the same YAML to stdout. **`RELAY_SKIP_RELAY_MASTER_BARE=1`** skips the **`relay-master.git`** mirror (e.g. local dev).
 
-**`relay-server`** can read the catalog directly (**`RELAY_MASTER_CATALOG_PATH`**) — then **`--write-authorized-repos`** is unnecessary; still run **`sync-relay-catalog.sh`** (without emit) to refresh bare mirrors under **`RELAY_REPO_PATH`**.
+**`relay-gateway`** can read the catalog directly (**`RELAY_MASTER_CATALOG_PATH`**) — then **`--write-authorized-repos`** is unnecessary; still run **`sync-relay-catalog.sh`** (without emit) to refresh bare mirrors under **`RELAY_REPO_PATH`**.
 
 **Add a repo (developer machine, needs forge access):** **`./scripts/add-catalog-submodule.sh snesology-library https://gitlab.com/clevertree/your-repo.git main`** — clones, computes **`relayRootCommit`**, runs **`git submodule add`**, then commit and push. For a **stub** remote, create it first with **`init-minimal-public-catalog-repo.sh`** + **`publish-catalog-stub-to-gitlab.sh`** (or push manually), then add the submodule from that URL.
 
