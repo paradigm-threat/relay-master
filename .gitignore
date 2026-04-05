@@ -1,0 +1,2 @@
+# Commit signing private key — never commit (public line lives in .relay.yaml allowedKeys)
+relay-signing-key
