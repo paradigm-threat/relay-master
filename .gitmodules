@@ -21,3 +21,13 @@
 	url = https://gitlab.com/clevertree/songwalker-library.git
 	relayRootCommit = 7b8dd02d23e0d1c63129723cd495285c0c733702
 	branch = main
+[submodule "ff-story"]
+	path = repos/ff-story
+	url = https://gitlab.com/clevertree/ff-story.git
+	relayRootCommit = bff49f45e1d84d64712ccb0e99b2cda93a4fc7f1
+	branch = main
+[submodule "ff-teaser"]
+	path = repos/ff-teaser
+	url = https://gitlab.com/clevertree/ff-teaser.git
+	relayRootCommit = a80058f827eb1639dde55daffd35123d394635b7
+	branch = main

@@ -1,0 +1,38 @@
+{
+  "schema": "relay.policy-profiles.v1",
+  "profiles": {
+    "primary": {
+      "tier": "primary",
+      "description": "Mesh / clevertree catalog repos — lax Git rules",
+      "default_publish_branch": "main",
+      "allow_binary_files": true,
+      "require_assets_manifest": false,
+      "limits": {}
+    },
+    "hosted": {
+      "tier": "hosted",
+      "description": "Home / thin free hosting — strict text-only Git",
+      "default_publish_branch": "release",
+      "allow_binary_files": false,
+      "require_assets_manifest_when_media": true,
+      "limits": {
+        "max_repo_bytes": 10485760,
+        "max_file_bytes": 262144,
+        "max_file_count": 512,
+        "allowed_extensions": [
+          ".html",
+          ".css",
+          ".js",
+          ".jsx",
+          ".cs",
+          ".md",
+          ".json",
+          ".yaml",
+          ".yml",
+          ".txt",
+          ".svg"
+        ]
+      }
+    }
+  }
+}

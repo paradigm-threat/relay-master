@@ -1,0 +1,9 @@
+{
+  "schema": "relay.catalog-repo.v1",
+  "repo": "ff-teaser",
+  "tier": "primary",
+  "forge_url": "https://gitlab.com/clevertree/ff-teaser.git",
+  "relay_root_commit": "a80058f827eb1639dde55daffd35123d394635b7",
+  "publish_branch": "main",
+  "signing_keys_source": "repo"
+}

@@ -88,8 +88,26 @@ To **register a submodule** whose objects only exist locally until you push the 
 
 Set **`RELAY_DEFAULT_REPO=relay-master`** so the node apex serves this repository’s default branch.
 
+## Unified catalog (`catalog/`)
+
+Per-repo policy lives under **`catalog/repos/<name>.json`** with a **`tier`**:
+
+| Tier | Meaning |
+|------|---------|
+| **`primary`** | Mesh repos (lax Git rules, `publish_branch` usually `main`) |
+| **`hosted`** | Home thin hosting (strict text-only, default `publish_branch` **`release`**) |
+
+- **`catalog/policy-profiles.json`** — default limits and publish branch per tier.
+- **`relay-catalog.json`** — legacy aggregate; regenerate with **`scripts/build-relay-catalog-json.sh`** after editing `catalog/repos/`.
+- Gateway: **`RELAY_MASTER_CATALOG_PATH`** loads `catalog/repos/` when present ([`relay-gateway/docs/RELAY_CATALOG.md`](../relay-gateway/docs/RELAY_CATALOG.md)).
+
+Submodules in **`.gitmodules`** remain the clone source during transition; catalog records duplicate **`forge_url`** + **`relay_root_commit`** for tooling.
+
 ## Files
 
+- **`catalog/`** — Per-repo JSON records and policy profiles (see above).
+- **`scripts/build-relay-catalog-json.sh`** — Build **`relay-catalog.json`** from **`catalog/repos/*.json`**.
+- **`scripts/check-catalog-pr-signing-keys.sh`** — Warn when a PR removes signing keys without a history reset.
 - **`scripts/sync-relay-catalog.sh`** — Mirror **`relay-master.git`**, **shallow** clone/fetch submodule bare repos (configurable), verify **`relayRootCommit`**, write full **`authorized-repos.yaml`**.
 - **`scripts/add-catalog-submodule.sh`** — Helper to add a submodule + **`relayRootCommit`** from a fresh clone.
 - **`scripts/init-minimal-public-catalog-repo.sh`** — README-only repo for public catalog **`url`**.

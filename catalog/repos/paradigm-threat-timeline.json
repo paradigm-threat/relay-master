@@ -1,0 +1,9 @@
+{
+  "schema": "relay.catalog-repo.v1",
+  "repo": "paradigm-threat-timeline",
+  "tier": "primary",
+  "forge_url": "https://gitlab.com/clevertree/paradigm-threat-timeline.git",
+  "relay_root_commit": "02e23addbc674c2c296b8df1573f3fdeeb3f893b",
+  "publish_branch": "main",
+  "signing_keys_source": "repo"
+}

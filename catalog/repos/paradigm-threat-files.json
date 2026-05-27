@@ -1,0 +1,9 @@
+{
+  "schema": "relay.catalog-repo.v1",
+  "repo": "paradigm-threat-files",
+  "tier": "primary",
+  "forge_url": "https://gitlab.com/clevertree/paradigm-threat-files.git",
+  "relay_root_commit": "3228be894bdda6c0351f14570dd151d011f92228",
+  "publish_branch": "main",
+  "signing_keys_source": "repo"
+}

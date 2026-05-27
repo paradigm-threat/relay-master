@@ -1,0 +1,7 @@
+{
+  "schema": "relay.catalog-index.v1",
+  "catalog_version": 1,
+  "repos_glob": "repos/*.json",
+  "legacy_aggregate": "relay-catalog.json",
+  "policy_profiles": "policy-profiles.json"
+}

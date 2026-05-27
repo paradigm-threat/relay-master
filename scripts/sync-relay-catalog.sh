@@ -82,6 +82,21 @@ bare_is_shallow() {
   [[ "$(git --git-dir="$bare_git_dir" rev-parse --is-shallow-repository 2>/dev/null || echo false)" == "true" ]]
 }
 
+ensure_bare_symbolic_head() {
+  local bare_git_dir=$1
+  local branch=$2
+  local ref="refs/heads/${branch}"
+  if ! git --git-dir="$bare_git_dir" rev-parse --verify "$ref" >/dev/null 2>&1; then
+    return 0
+  fi
+  local current=""
+  current="$(git --git-dir="$bare_git_dir" symbolic-ref -q HEAD 2>/dev/null || true)"
+  if [[ "$current" != "$ref" ]]; then
+    echo "sync-relay-catalog: symbolic-ref HEAD -> $ref ($bare_git_dir)"
+    git --git-dir="$bare_git_dir" symbolic-ref HEAD "$ref"
+  fi
+}
+
 verify_root() {
   local bare_git_dir=$1
   local root_commit=$2
@@ -129,6 +144,25 @@ sync_relay_master_mirror() {
     git --git-dir="$dest" remote set-url origin "$url" 2>/dev/null || true
     git --git-dir="$dest" fetch origin "+refs/*:refs/*" --prune
   fi
+  ensure_bare_symbolic_head "$dest" "$(relay_master_branch_name)"
+}
+
+emit_catalog_repo_stanzas() {
+  local repos_dir="${ROOT}/catalog/repos"
+  [[ -d "$repos_dir" ]] || return 1
+  command -v jq >/dev/null 2>&1 || return 1
+  local f name root branch
+  for f in "$repos_dir"/*.json; do
+    [[ -f "$f" ]] || continue
+    name="$(basename "$f" .json)"
+    root="$(jq -r '.relay_root_commit // empty' "$f")"
+    branch="$(jq -r '.publish_branch // .branch // "main"' "$f")"
+    [[ -z "$root" || ${#root} -ne 40 ]] && continue
+    echo "  ${name}:"
+    echo "    anchor_commit: \"${root}\""
+    echo "    branch: ${branch}"
+  done
+  return 0
 }
 
 emit_full_authorized_repos() {
@@ -149,6 +183,10 @@ emit_full_authorized_repos() {
     elif ! git --git-dir="$bare" merge-base --is-ancestor "$master_head" "refs/heads/${master_branch}" 2>/dev/null; then
       echo "sync-relay-catalog: warning: ${master_head} not ancestor of refs/heads/${master_branch} on mirror" >&2
     fi
+  fi
+
+  if emit_catalog_repo_stanzas; then
+    return 0
   fi
 
   while IFS= read -r name; do
@@ -214,6 +252,7 @@ while IFS= read -r name; do
     fi
     verify_root "$bare" "$root" "$branch"
   fi
+  ensure_bare_symbolic_head "$bare" "$branch"
 done < <(list_submodule_names)
 
 if [[ "$EMIT_YAML" -eq 1 ]]; then
