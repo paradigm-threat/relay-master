@@ -1,4 +1,19 @@
 git:
+  notifyMode: next
+  origins:
+    - name: dfw1
+      kind: relay
+      host: dfw1.relaygateway.net
+      fetch: true
+      notify: true
+    - name: lon1
+      kind: relay
+      host: lon1.relaygateway.net
+      notify: true
+    - name: hkg1
+      kind: relay
+      host: hkg1.relaygateway.net
+      notify: true
   branchRules:
     branches:
       - name: "*"
@@ -6,6 +21,8 @@ git:
           requireSigned: true
           allowUnsigned: false
           allowedKeys:
+            - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILanag4UriR/4IatVhRxv59gG6/5xEt6ccg/jzINE3R9 relay-catalog-signing"
+          adminKeys:
             - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILanag4UriR/4IatVhRxv59gG6/5xEt6ccg/jzINE3R9 relay-catalog-signing"
       - name: develop
         rule:
