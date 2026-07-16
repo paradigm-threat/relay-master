@@ -34,5 +34,5 @@
 [submodule "clevertree-site"]
 	path = repos/clevertree-site
 	url = https://gitlab.com/clevertree/clevertree-site.git
-	relayRootCommit = 84402b4e7415171167072b1f798cf30bdb5803fe
+	relayRootCommit = f6d069dc29cdbfedb33b0b8d6af1b0cbc3866c94
 	branch = release

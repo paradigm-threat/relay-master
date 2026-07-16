@@ -3,7 +3,7 @@
   "repo": "clevertree-site",
   "tier": "hosted",
   "forge_url": "https://gitlab.com/clevertree/clevertree-site.git",
-  "relay_root_commit": "84402b4e7415171167072b1f798cf30bdb5803fe",
+  "relay_root_commit": "f6d069dc29cdbfedb33b0b8d6af1b0cbc3866c94",
   "publish_branch": "release",
   "signing_keys_source": "repo"
 }
