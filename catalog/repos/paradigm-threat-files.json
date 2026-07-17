@@ -3,7 +3,7 @@
   "repo": "paradigm-threat-files",
   "tier": "primary",
   "forge_url": "https://gitlab.com/clevertree/paradigm-threat-files.git",
-  "relay_root_commit": "3228be894bdda6c0351f14570dd151d011f92228",
+  "relay_root_commit": "c9dcbc487c8307735e03877eb94bd16091440d8a",
   "publish_branch": "main",
   "signing_keys_source": "repo"
 }

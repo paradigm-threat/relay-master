@@ -3,7 +3,7 @@
   "repo": "paradigm-threat-timeline",
   "tier": "primary",
   "forge_url": "https://gitlab.com/clevertree/paradigm-threat-timeline.git",
-  "relay_root_commit": "02e23addbc674c2c296b8df1573f3fdeeb3f893b",
+  "relay_root_commit": "5aa8e5cc1aed42be0c2d622d8e53aeb04a92df90",
   "publish_branch": "main",
   "signing_keys_source": "repo"
 }

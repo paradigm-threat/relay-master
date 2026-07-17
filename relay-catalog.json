@@ -17,7 +17,7 @@
     },
     "paradigm-threat-files": {
       "url": "https://gitlab.com/clevertree/paradigm-threat-files.git",
-      "relayRootCommit": "3228be894bdda6c0351f14570dd151d011f92228",
+      "relayRootCommit": "c9dcbc487c8307735e03877eb94bd16091440d8a",
       "branch": "main"
     },
     "paradigm-threat-site": {
@@ -27,7 +27,7 @@
     },
     "paradigm-threat-timeline": {
       "url": "https://gitlab.com/clevertree/paradigm-threat-timeline.git",
-      "relayRootCommit": "02e23addbc674c2c296b8df1573f3fdeeb3f893b",
+      "relayRootCommit": "5aa8e5cc1aed42be0c2d622d8e53aeb04a92df90",
       "branch": "main"
     },
     "snesology-library": {
