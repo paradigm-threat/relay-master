@@ -31,7 +31,7 @@
       "branch": "main"
     },
     "relay-web-assets": {
-      "url": "https://gitlab.com/clevertree/relay-web-assets.git",
+      "url": "git://dfw1.relaygateway.net:9418/relay-web-assets.git",
       "relayRootCommit": "9bd8ff72d47be26dcde3c97f475ff7dcef084e40",
       "branch": "release"
     },
