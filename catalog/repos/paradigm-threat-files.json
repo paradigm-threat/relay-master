@@ -6,8 +6,12 @@
   "relay_root_commit": "8ec8fc177ef1fd8450789228958b80065f05fe79",
   "publish_branch": "main",
   "signing_keys_source": "repo",
+  "domains": [
+    "relay.paradigmthreat.net"
+  ],
   "limits": {
     "allow_binary_files": false,
     "thin_ipfs_assets": true
-  }
+  },
+  "notes": "Thin tip (no binaries, IPFS stubs). In-repo CleverScript UI; park canary Host."
 }

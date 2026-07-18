@@ -32,7 +32,7 @@
     },
     "paradigm-threat-web": {
       "url": "git://dfw1.relaygateway.net:9418/paradigm-threat-web.git",
-      "relayRootCommit": "e96abeafd447193986f1909b63cf730755101221",
+      "relayRootCommit": "38c0cfc0628d016b4e822defbcecab54f5851ac6",
       "branch": "release"
     },
     "relay-web-assets": {

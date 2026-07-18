@@ -9,5 +9,6 @@
   "limits": {
     "allow_binary_files": false,
     "thin_ipfs_assets": true
-  }
+  },
+  "notes": "Thin tip. In-repo CleverScript UI on repo subdomain (no park domain this wave)."
 }
