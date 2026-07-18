@@ -1,0 +1,10 @@
+{
+  "schema": "relay.catalog-repo.v1",
+  "repo": "paradigm-threat-web",
+  "tier": "hosted",
+  "forge_url": "git://dfw1.relaygateway.net:9418/paradigm-threat-web.git",
+  "relay_root_commit": "e96abeafd447193986f1909b63cf730755101221",
+  "publish_branch": "release",
+  "signing_keys_source": "repo",
+  "domains": ["relay.paradigmthreat.net"]
+}
