@@ -2,8 +2,12 @@
   "schema": "relay.catalog-repo.v1",
   "repo": "paradigm-threat-timeline",
   "tier": "primary",
-  "forge_url": "https://gitlab.com/clevertree/paradigm-threat-timeline.git",
-  "relay_root_commit": "5aa8e5cc1aed42be0c2d622d8e53aeb04a92df90",
+  "forge_url": "https://gitlab.com/clevertree/paradigm-threat-timeline-thin.git",
+  "relay_root_commit": "08a78a674d0ecc367cc55fc2bba4ce40445cc5c0",
   "publish_branch": "main",
-  "signing_keys_source": "repo"
+  "signing_keys_source": "repo",
+  "limits": {
+    "allow_binary_files": false,
+    "thin_ipfs_assets": true
+  }
 }
