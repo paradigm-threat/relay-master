@@ -16,7 +16,7 @@
       "branch": "main"
     },
     "paradigm-threat-files": {
-      "url": "https://gitlab.com/clevertree/paradigm-threat-files-thin.git",
+      "url": "git://dfw1.relaygateway.net:9418/paradigm-threat-files.git",
       "relayRootCommit": "de69f1e5e62822e39b3e4bd5a6287522c50c6d38",
       "branch": "main"
     },
@@ -26,7 +26,7 @@
       "branch": "main"
     },
     "paradigm-threat-timeline": {
-      "url": "https://gitlab.com/clevertree/paradigm-threat-timeline-thin.git",
+      "url": "git://dfw1.relaygateway.net:9418/paradigm-threat-timeline.git",
       "relayRootCommit": "08a78a674d0ecc367cc55fc2bba4ce40445cc5c0",
       "branch": "main"
     },
