@@ -1,0 +1,9 @@
+{
+  "schema": "relay.catalog-repo.v1",
+  "repo": "relay-web-assets",
+  "tier": "hosted",
+  "forge_url": "https://gitlab.com/clevertree/relay-web-assets.git",
+  "relay_root_commit": "9bd8ff72d47be26dcde3c97f475ff7dcef084e40",
+  "publish_branch": "release",
+  "signing_keys_source": "repo"
+}
