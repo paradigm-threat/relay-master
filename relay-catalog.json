@@ -17,7 +17,7 @@
     },
     "paradigm-threat-files": {
       "url": "git://dfw1.relaygateway.net:9418/paradigm-threat-files.git",
-      "relayRootCommit": "de69f1e5e62822e39b3e4bd5a6287522c50c6d38",
+      "relayRootCommit": "8ec8fc177ef1fd8450789228958b80065f05fe79",
       "branch": "main"
     },
     "paradigm-threat-site": {
@@ -27,7 +27,7 @@
     },
     "paradigm-threat-timeline": {
       "url": "git://dfw1.relaygateway.net:9418/paradigm-threat-timeline.git",
-      "relayRootCommit": "08a78a674d0ecc367cc55fc2bba4ce40445cc5c0",
+      "relayRootCommit": "a09af15603fabaeb69acee87c1ff9690c3367b93",
       "branch": "main"
     },
     "relay-web-assets": {

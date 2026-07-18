@@ -3,7 +3,7 @@
   "repo": "paradigm-threat-timeline",
   "tier": "primary",
   "forge_url": "git://dfw1.relaygateway.net:9418/paradigm-threat-timeline.git",
-  "relay_root_commit": "08a78a674d0ecc367cc55fc2bba4ce40445cc5c0",
+  "relay_root_commit": "a09af15603fabaeb69acee87c1ff9690c3367b93",
   "publish_branch": "main",
   "signing_keys_source": "repo",
   "limits": {
