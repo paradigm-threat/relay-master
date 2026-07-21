@@ -2,8 +2,8 @@
   "schema": "relay.catalog-repo.v1",
   "repo": "paradigm-threat-files",
   "tier": "primary",
-  "forge_url": "git://dfw1.relaygateway.net:9418/paradigm-threat-files.git",
-  "relay_root_commit": "8ec8fc177ef1fd8450789228958b80065f05fe79",
+  "forge_url": "https://gitlab.com/clevertree/paradigm-threat-files.git",
+  "relay_root_commit": "c9dcbc487c8307735e03877eb94bd16091440d8a",
   "publish_branch": "main",
   "signing_keys_source": "repo",
   "domains": [
@@ -13,5 +13,5 @@
     "allow_binary_files": false,
     "thin_ipfs_assets": true
   },
-  "notes": "Thin tip (no binaries, IPFS stubs). In-repo CleverScript UI; park canary Host."
+  "notes": "Thin tip (no binaries, IPFS stubs). GitLab full history is forge SoT; catalog sync uses full clone (RELAY_CATALOG_CLONE_DEPTH=0)."
 }

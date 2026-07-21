@@ -2,13 +2,13 @@
   "schema": "relay.catalog-repo.v1",
   "repo": "paradigm-threat-timeline",
   "tier": "primary",
-  "forge_url": "git://dfw1.relaygateway.net:9418/paradigm-threat-timeline.git",
-  "relay_root_commit": "a09af15603fabaeb69acee87c1ff9690c3367b93",
+  "forge_url": "https://gitlab.com/clevertree/paradigm-threat-timeline.git",
+  "relay_root_commit": "5aa8e5cc1aed42be0c2d622d8e53aeb04a92df90",
   "publish_branch": "main",
   "signing_keys_source": "repo",
   "limits": {
     "allow_binary_files": false,
     "thin_ipfs_assets": true
   },
-  "notes": "Thin tip. In-repo CleverScript UI on repo subdomain (no park domain this wave)."
+  "notes": "Thin tip. GitLab full history is forge SoT; catalog sync uses full clone (RELAY_CATALOG_CLONE_DEPTH=0)."
 }

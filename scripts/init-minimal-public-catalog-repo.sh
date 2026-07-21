@@ -24,8 +24,8 @@ cat >"$OUT/README.md" <<EOF
 
 This repository is a **minimal public face** for Relay’s **relay-master** catalog.
 
-Nodes sync from here with \`git clone --depth 1\` (see \`relay-master/scripts/sync-relay-catalog.sh\`).
-**Do not publish restricted content** to this remote; push full trees to relay with \`git push git://<host>:9418/<repo>.git\`.
+Nodes that opt into shallow catalog sync use \`RELAY_CATALOG_CLONE_DEPTH=1\` (see \`relay-master/scripts/sync-relay-catalog.sh\`). Production thin repos default to **full** history (\`CLONE_DEPTH=0\`).
+**Do not publish restricted content** to this remote when using the stub path; push full trees to relay with \`git push git://<host>:9418/<repo>.git\`.
 EOF
 
 git -C "$OUT" init -b main

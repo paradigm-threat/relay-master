@@ -30,13 +30,15 @@ Submodules are not *only* a policy list:
 
 Relay-specific policy is the combination of **`url`** (source of truth for clone) + **`relayRootCommit`** (anti–unrelated-history).
 
-### Public stub + private body (recommended for restricted content)
+### Thin / full-history forge (production default)
 
-The forge **`url`** should normally reference a repository whose **first commit is minimal** (e.g. **README-only**). **`scripts/sync-relay-catalog.sh`** defaults to **`git clone --bare --depth 1`** (see **`RELAY_CATALOG_CLONE_DEPTH`**) so nodes pull almost nothing from GitLab/GitHub while **`relayRootCommit`** still pins the allowed root. **Bulk data and private history are not pushed to that forge URL**; operators **`git push`** the full mirror to **`git://<relay>:9418/<name>.git`** after the catalog has created the bare repo.
+For **thin** catalog repos (GitLab as source of truth, no binary blobs in-git), **`scripts/sync-relay-catalog.sh`** defaults to a **full** bare clone (**`RELAY_CATALOG_CLONE_DEPTH=0`**). Nodes keep complete ancestry so **`merge-base`**, go-live, and operator tools work. Point **`url`** at the real forge (e.g. GitLab) and set **`relayRootCommit`** to the trusted root of that history.
 
-With **`RELAY_CATALOG_CLONE_DEPTH=1`**, the forge branch must expose **`relayRootCommit`** in that shallow slice (simplest: **one commit** on **`main`** = stub only). If you add more forge commits, increase depth or document **`RELAY_CATALOG_FETCH_DEPTH`**.
+### Opt-in shallow (free-tier / stub forges only)
 
-- **`scripts/init-minimal-public-catalog-repo.sh`** — create a README-only root commit and print **`relayRootCommit`**.
+Set **`RELAY_CATALOG_CLONE_DEPTH=1`** (or **N**) when the forge must stay a **README-only stub** and disk/bandwidth are constrained (free-tier hosts). In that mode the forge tip must still expose **`relayRootCommit`** in the shallow slice; operators then **`git push`** the full mirror to **`git://<relay>:9418/<name>.git`**. Do **not** use shallow for production thin paradigm repos — depth-1 is how Relays previously lost timeline history.
+
+- **`scripts/init-minimal-public-catalog-repo.sh`** — create a README-only root commit and print **`relayRootCommit`** (stub / free-tier path).
 - **`scripts/publish-catalog-stub-to-gitlab.sh`** — optional GitLab project create + push (needs **`GITLAB_TOKEN`**).
 
 ## User-facing clone URLs (`git://relaygateway.net/<repo>.git`)

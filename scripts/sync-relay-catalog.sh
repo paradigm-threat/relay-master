@@ -3,18 +3,18 @@
 # Also mirrors this repo to RELAY_REPO_PATH/relay-master.git when origin is set.
 # Run from a relay-master checkout (repo root contains .gitmodules).
 #
-# Shallow forge mirrors (default): RELAY_CATALOG_CLONE_DEPTH=1 uses
-#   git clone --bare --depth 1 <url>
-# so public catalog repos can be README-only roots (see RELAY_TRUST_AND_BOOTSTRAP.md).
-# If the forge branch has more than one commit, ensure depth reaches relayRootCommit
-# or set RELAY_CATALOG_CLONE_DEPTH higher. After operators push full history to the
-# bare on the node, fetches become full (non-shallow) automatically.
+# Full-history forge mirrors (default): RELAY_CATALOG_CLONE_DEPTH=0 (or unset) uses
+#   git clone --bare <url>
+# so thin / GitLab-backed catalog repos keep complete ancestry on every node.
+#
+# Opt-in shallow (free-tier / stub forges only): set RELAY_CATALOG_CLONE_DEPTH=1
+#   (or N) for git clone --bare --depth N. Do not use shallow for production thin
+#   repos that need merge-base / history — depth-1 is how Relays lost timeline history.
 #
 # RELAY_CATALOG_FETCH_DEPTH: when the bare is still shallow, pass --depth to fetch
-#   (default: same as RELAY_CATALOG_CLONE_DEPTH). Set to 0 or empty for full fetch.
-# RELAY_CATALOG_AUTO_DEEPEN: after a shallow clone, if relayRootCommit is missing from
-#   the object database, run one fetch --deepen N (handles a few extra README commits
-#   on the forge while keeping the initial clone small).
+#   (default: same as RELAY_CATALOG_CLONE_DEPTH). 0 / empty = full fetch.
+# RELAY_CATALOG_AUTO_DEEPEN: if a shallow mirror lacks relayRootCommit, one
+#   fetch --deepen N (default 256).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -39,7 +39,7 @@ usage() {
   echo "  RELAY_DATA        used if RELAY_REPO_PATH unset" >&2
   echo "  RELAY_MASTER_BRANCH  branch name for relay-master stanza if HEAD detached (default: main)" >&2
   echo "  RELAY_SKIP_RELAY_MASTER_BARE=1  skip mirroring relay-master.git under RELAY_REPO_PATH" >&2
-  echo "  RELAY_CATALOG_CLONE_DEPTH   submodule initial bare clone depth (default: 1)" >&2
+  echo "  RELAY_CATALOG_CLONE_DEPTH   bare clone depth (default: 0 = full history; set 1+ for free-tier stubs)" >&2
   echo "  RELAY_CATALOG_FETCH_DEPTH   fetch depth while bare is shallow (default: clone depth; 0 = full)" >&2
   echo "  RELAY_CATALOG_AUTO_DEEPEN   if shallow mirror lacks relayRootCommit, fetch --deepen (default: 256)" >&2
   exit 1
@@ -220,8 +220,8 @@ while IFS= read -r name; do
   fi
 
   bare="${RELAY_REPO_PATH}/${name}.git"
-  clone_depth="${RELAY_CATALOG_CLONE_DEPTH:-1}"
-  fetch_depth="${RELAY_CATALOG_FETCH_DEPTH:-${RELAY_CATALOG_CLONE_DEPTH:-1}}"
+  clone_depth="${RELAY_CATALOG_CLONE_DEPTH:-0}"
+  fetch_depth="${RELAY_CATALOG_FETCH_DEPTH:-${RELAY_CATALOG_CLONE_DEPTH:-0}}"
 
   if [[ ! -d "$bare" ]]; then
     echo "sync-relay-catalog: cloning $name -> $bare (depth=${clone_depth})"
