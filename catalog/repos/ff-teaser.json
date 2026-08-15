@@ -5,5 +5,6 @@
   "forge_url": "https://gitlab.com/clevertree/ff-teaser.git",
   "relay_root_commit": "a80058f827eb1639dde55daffd35123d394635b7",
   "publish_branch": "main",
+  "publish_origin": "dfw1.relaygateway.net",
   "signing_keys_source": "repo"
 }

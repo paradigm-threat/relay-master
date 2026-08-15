@@ -5,6 +5,7 @@
   "forge_url": "git://dfw1.relaygateway.net:9418/relay-web-assets.git",
   "relay_root_commit": "9bd8ff72d47be26dcde3c97f475ff7dcef084e40",
   "publish_branch": "release",
+  "publish_origin": "dfw1.relaygateway.net",
   "signing_keys_source": "repo",
   "notes": "GitLab clevertree/relay-web-assets is private; catalog sync uses mesh git:// until forge is public or nodes have credentials."
 }

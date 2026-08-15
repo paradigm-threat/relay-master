@@ -12,7 +12,7 @@
     "hosted": {
       "tier": "hosted",
       "description": "Home / thin free hosting — strict text-only Git",
-      "default_publish_branch": "release",
+      "default_publish_branch": "main",
       "allow_binary_files": false,
       "require_assets_manifest_when_media": true,
       "limits": {

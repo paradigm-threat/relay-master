@@ -5,5 +5,6 @@
   "forge_url": "https://gitlab.com/clevertree/songwalker-library.git",
   "relay_root_commit": "7b8dd02d23e0d1c63129723cd495285c0c733702",
   "publish_branch": "main",
+  "publish_origin": "dfw1.relaygateway.net",
   "signing_keys_source": "repo"
 }

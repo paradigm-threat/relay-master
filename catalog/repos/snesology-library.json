@@ -5,5 +5,6 @@
   "forge_url": "https://gitlab.com/clevertree/snesology-library.git",
   "relay_root_commit": "440f92051a0a6806da301f59a432c8a7706ff7b7",
   "publish_branch": "main",
+  "publish_origin": "dfw1.relaygateway.net",
   "signing_keys_source": "repo"
 }

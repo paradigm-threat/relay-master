@@ -5,5 +5,6 @@
   "forge_url": "https://gitlab.com/clevertree/ff-story.git",
   "relay_root_commit": "bff49f45e1d84d64712ccb0e99b2cda93a4fc7f1",
   "publish_branch": "main",
+  "publish_origin": "dfw1.relaygateway.net",
   "signing_keys_source": "repo"
 }
