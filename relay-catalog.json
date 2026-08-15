@@ -20,11 +20,6 @@
       "relayRootCommit": "c9dcbc487c8307735e03877eb94bd16091440d8a",
       "branch": "main"
     },
-    "paradigm-threat-site": {
-      "url": "https://gitlab.com/clevertree/paradigm-threat-site.git",
-      "relayRootCommit": "688609b5de5e6fc6b5cc09db9e2e329e8e3808e5",
-      "branch": "main"
-    },
     "paradigm-threat-timeline": {
       "url": "https://gitlab.com/clevertree/paradigm-threat-timeline.git",
       "relayRootCommit": "5aa8e5cc1aed42be0c2d622d8e53aeb04a92df90",

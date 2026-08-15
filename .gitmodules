@@ -2,10 +2,6 @@
 	path = repos/paradigm-threat-files
 	url = https://gitlab.com/clevertree/paradigm-threat-files.git
 	relayRootCommit = c9dcbc487c8307735e03877eb94bd16091440d8a
-[submodule "paradigm-threat-site"]
-	path = repos/paradigm-threat-site
-	url = https://gitlab.com/clevertree/paradigm-threat-site.git
-	relayRootCommit = 688609b5de5e6fc6b5cc09db9e2e329e8e3808e5
 [submodule "snesology-library"]
 	path = repos/snesology-library
 	url = https://gitlab.com/clevertree/snesology-library.git
