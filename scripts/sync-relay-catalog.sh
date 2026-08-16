@@ -16,6 +16,7 @@
 # RELAY_CATALOG_AUTO_DEEPEN: if a shallow mirror lacks relayRootCommit, one
 #   fetch --deepen N (default 256).
 set -euo pipefail
+export GIT_TERMINAL_PROMPT=0
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
@@ -141,8 +142,14 @@ sync_relay_master_mirror() {
     git clone --mirror "$url" "$dest"
   else
     echo "sync-relay-catalog: fetching relay-master mirror"
-    git --git-dir="$dest" remote set-url origin "$url" 2>/dev/null || true
-    git --git-dir="$dest" fetch origin "+refs/*:refs/*" --prune
+    if git --git-dir="$dest" remote get-url origin >/dev/null 2>&1; then
+      git --git-dir="$dest" remote set-url origin "$url"
+    else
+      git --git-dir="$dest" remote add origin "$url"
+    fi
+    if ! git --git-dir="$dest" fetch origin "+refs/*:refs/*" --prune; then
+      echo "sync-relay-catalog: WARN: relay-master.git fetch failed (keeping existing mirror)" >&2
+    fi
   fi
   ensure_bare_symbolic_head "$dest" "$(relay_master_branch_name)"
 }
@@ -219,28 +226,40 @@ while IFS= read -r name; do
     exit 1
   fi
 
-  bare="${RELAY_REPO_PATH}/${name}.git"
+  # Submodule names may be "repos/foo"; bare mirrors live at RELAY_REPO_PATH/foo.git.
+  local slug
+  slug="$(basename "$path")"
+  # Nodes typically have no GitLab deploy key.
+  if [[ "$url" == git@gitlab.com:* ]]; then
+    url="https://gitlab.com/${url#git@gitlab.com:}"
+  fi
+
+  bare="${RELAY_REPO_PATH}/${slug}.git"
   clone_depth="${RELAY_CATALOG_CLONE_DEPTH:-0}"
   fetch_depth="${RELAY_CATALOG_FETCH_DEPTH:-${RELAY_CATALOG_CLONE_DEPTH:-0}}"
 
   if [[ ! -d "$bare" ]]; then
-    echo "sync-relay-catalog: cloning $name -> $bare (depth=${clone_depth})"
+    echo "sync-relay-catalog: cloning $slug -> $bare (depth=${clone_depth})"
     if [[ -n "$clone_depth" && "$clone_depth" != "0" ]]; then
       git clone --bare --depth "$clone_depth" "$url" "$bare"
     else
       git clone --bare "$url" "$bare"
     fi
   else
-    echo "sync-relay-catalog: fetching $name"
+    echo "sync-relay-catalog: fetching $slug"
     if git --git-dir="$bare" remote get-url origin >/dev/null 2>&1; then
       git --git-dir="$bare" remote set-url origin "$url"
     else
       git --git-dir="$bare" remote add origin "$url"
     fi
     if bare_is_shallow "$bare" && [[ -n "$fetch_depth" && "$fetch_depth" != "0" ]]; then
-      git --git-dir="$bare" fetch origin "+refs/heads/*:refs/heads/*" --prune --depth "$fetch_depth"
+      if ! git --git-dir="$bare" fetch origin "+refs/heads/*:refs/heads/*" --prune --depth "$fetch_depth"; then
+        echo "sync-relay-catalog: WARN: fetch $slug failed (keeping existing bare; peer fetch may fill)" >&2
+      fi
     else
-      git --git-dir="$bare" fetch origin "+refs/heads/*:refs/heads/*" --prune
+      if ! git --git-dir="$bare" fetch origin "+refs/heads/*:refs/heads/*" --prune; then
+        echo "sync-relay-catalog: WARN: fetch $slug failed (keeping existing bare; peer fetch may fill)" >&2
+      fi
     fi
   fi
 
