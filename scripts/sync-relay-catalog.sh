@@ -227,7 +227,6 @@ while IFS= read -r name; do
   fi
 
   # Submodule names may be "repos/foo"; bare mirrors live at RELAY_REPO_PATH/foo.git.
-  local slug
   slug="$(basename "$path")"
   # Nodes typically have no GitLab deploy key.
   if [[ "$url" == git@gitlab.com:* ]]; then
