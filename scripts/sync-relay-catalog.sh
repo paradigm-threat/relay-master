@@ -236,6 +236,8 @@ while IFS= read -r name; do
   bare="${RELAY_REPO_PATH}/${slug}.git"
   clone_depth="${RELAY_CATALOG_CLONE_DEPTH:-0}"
   fetch_depth="${RELAY_CATALOG_FETCH_DEPTH:-${RELAY_CATALOG_CLONE_DEPTH:-0}}"
+  existed=0
+  [[ -d "$bare" ]] && existed=1
 
   if [[ ! -d "$bare" ]]; then
     echo "sync-relay-catalog: cloning $slug -> $bare (depth=${clone_depth})"
@@ -264,11 +266,18 @@ while IFS= read -r name; do
 
   if ! verify_root "$bare" "$root" "$branch"; then
     if bare_is_shallow "$bare"; then
-      echo "sync-relay-catalog: deepening shallow mirror for $name (reach relayRootCommit)..." >&2
+      echo "sync-relay-catalog: deepening shallow mirror for $slug (reach relayRootCommit)..." >&2
       deepen="${RELAY_CATALOG_AUTO_DEEPEN:-256}"
       git --git-dir="$bare" fetch origin "+refs/heads/*:refs/heads/*" --prune --deepen="$deepen" || true
     fi
-    verify_root "$bare" "$root" "$branch"
+    if ! verify_root "$bare" "$root" "$branch"; then
+      if [[ "$existed" == "1" ]]; then
+        echo "sync-relay-catalog: WARN: verify_root $slug failed (keeping existing bare; peer fetch may fill)" >&2
+      else
+        echo "sync-relay-catalog: verify_root failed for newly cloned $slug" >&2
+        exit 1
+      fi
+    fi
   fi
   ensure_bare_symbolic_head "$bare" "$branch"
 done < <(list_submodule_names)
