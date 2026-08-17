@@ -1,6 +1,7 @@
 {
   "schema": "relay.catalog-repo.v1",
   "repo": "relay-web-assets",
+  "description": "Pre-built embed and WASM CDN trees for Relay parked sites and SSR hydrate.",
   "tier": "hosted",
   "forge_url": "git://dfw1.relaygateway.net:9418/relay-web-assets.git",
   "relay_root_commit": "9bd8ff72d47be26dcde3c97f475ff7dcef084e40",

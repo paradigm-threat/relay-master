@@ -1,6 +1,7 @@
 {
   "schema": "relay.catalog-repo.v1",
   "repo": "songwalker-library",
+  "description": "Instrument and sample library for SongWalker, a music programming language with a built-in Rust/WASM synthesis engine.",
   "tier": "primary",
   "forge_url": "https://gitlab.com/clevertree/songwalker-library.git",
   "relay_root_commit": "7b8dd02d23e0d1c63129723cd495285c0c733702",

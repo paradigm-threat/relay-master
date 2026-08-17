@@ -1,6 +1,7 @@
 {
   "schema": "relay.catalog-repo.v1",
   "repo": "ff-teaser",
+  "description": "Animated teaser for Porcupine Tree's Stars Die, a conceptual preview of the Forgotten Future narrative.",
   "tier": "primary",
   "forge_url": "https://gitlab.com/clevertree/ff-teaser.git",
   "relay_root_commit": "a80058f827eb1639dde55daffd35123d394635b7",

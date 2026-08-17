@@ -1,6 +1,7 @@
 {
   "schema": "relay.catalog-repo.v1",
   "repo": "paradigm-threat-web",
+  "description": "Retired Paradigm Threat park canary. The live UI now lives in the files and timeline repos.",
   "tier": "hosted",
   "forge_url": "git://dfw1.relaygateway.net:9418/paradigm-threat-web.git",
   "relay_root_commit": "38c0cfc0628d016b4e822defbcecab54f5851ac6",
