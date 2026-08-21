@@ -3,10 +3,10 @@
   "repo": "paradigm-threat-web",
   "description": "Retired Paradigm Threat park canary. The live UI now lives in the files and timeline repos.",
   "tier": "hosted",
-  "forge_url": "git://dfw1.relaygateway.net:9418/paradigm-threat-web.git",
+  "forge_url": "git://iad1.relaygateway.net:9418/paradigm-threat-web.git",
   "relay_root_commit": "38c0cfc0628d016b4e822defbcecab54f5851ac6",
   "publish_branch": "release",
-  "publish_origin": "dfw1.relaygateway.net",
+  "publish_origin": "iad1.relaygateway.net",
   "signing_keys_source": "repo",
-  "notes": "Retired park canary — UI lives in thin files/timeline repos. No catalog domains."
+  "notes": "Retired park canary \u2014 UI lives in thin files/timeline repos. No catalog domains."
 }

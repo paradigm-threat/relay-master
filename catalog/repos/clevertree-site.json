@@ -6,7 +6,7 @@
   "forge_url": "https://gitlab.com/clevertree/clevertree-site.git",
   "relay_root_commit": "f6d069dc29cdbfedb33b0b8d6af1b0cbc3866c94",
   "publish_branch": "release",
-  "publish_origin": "dfw1.relaygateway.net",
+  "publish_origin": "iad1.relaygateway.net",
   "signing_keys_source": "repo",
   "domains": [
     "relay.clevertree.net",

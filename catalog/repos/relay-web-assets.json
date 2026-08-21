@@ -3,10 +3,10 @@
   "repo": "relay-web-assets",
   "description": "Pre-built embed and WASM CDN trees for Relay parked sites and SSR hydrate.",
   "tier": "hosted",
-  "forge_url": "git://dfw1.relaygateway.net:9418/relay-web-assets.git",
+  "forge_url": "git://iad1.relaygateway.net:9418/relay-web-assets.git",
   "relay_root_commit": "9bd8ff72d47be26dcde3c97f475ff7dcef084e40",
   "publish_branch": "release",
-  "publish_origin": "dfw1.relaygateway.net",
+  "publish_origin": "iad1.relaygateway.net",
   "signing_keys_source": "repo",
   "notes": "GitLab clevertree/relay-web-assets is private; catalog sync uses mesh git:// until forge is public or nodes have credentials."
 }

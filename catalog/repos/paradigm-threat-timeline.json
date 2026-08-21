@@ -1,12 +1,12 @@
 {
   "schema": "relay.catalog-repo.v1",
   "repo": "paradigm-threat-timeline",
-  "description": "A cross-chronology investigation challenging the official timeline of Earth history — Scaligerian, Fomenko's New Chronology, Saturnian Cosmology, and indigenous traditions.",
+  "description": "A cross-chronology investigation challenging the official timeline of Earth history \u2014 Scaligerian, Fomenko's New Chronology, Saturnian Cosmology, and indigenous traditions.",
   "tier": "primary",
   "forge_url": "https://gitlab.com/clevertree/paradigm-threat-timeline.git",
   "relay_root_commit": "5aa8e5cc1aed42be0c2d622d8e53aeb04a92df90",
   "publish_branch": "main",
-  "publish_origin": "dfw1.relaygateway.net",
+  "publish_origin": "iad1.relaygateway.net",
   "signing_keys_source": "repo",
   "limits": {
     "allow_binary_files": false,
