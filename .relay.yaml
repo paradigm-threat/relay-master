@@ -1,14 +1,14 @@
 git:
   notifyMode: next
   origins:
-    - name: dfw1
+    - name: iad1
       kind: relay
-      host: dfw1.relaygateway.net
+      host: iad1.relaygateway.net
       fetch: true
       notify: true
-    - name: lon1
+    - name: sjc1
       kind: relay
-      host: lon1.relaygateway.net
+      host: sjc1.relaygateway.net
       notify: true
     - name: hkg1
       kind: relay
