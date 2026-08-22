@@ -12,8 +12,8 @@
     "relay.paradigmthreat.net"
   ],
   "limits": {
-    "allow_binary_files": false,
-    "thin_ipfs_assets": true
+    "allow_binary_files": true,
+    "thin_ipfs_assets": false
   },
-  "notes": "Thin tip (no binaries, IPFS stubs). GitLab full history is forge SoT; catalog sync uses full clone (RELAY_CATALOG_CLONE_DEPTH=0)."
+  "notes": "Fat repo: real binaries at public paths; assets.manifest.json is CDN/index lane. GitLab is forge SoT; catalog sync uses full clone (RELAY_CATALOG_CLONE_DEPTH=0)."
 }
