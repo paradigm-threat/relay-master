@@ -8,5 +8,9 @@
   "publish_branch": "release",
   "publish_origin": "iad1.relaygateway.net",
   "signing_keys_source": "repo",
-  "notes": "GitLab clevertree/relay-web-assets is private; catalog sync uses mesh git:// until forge is public or nodes have credentials."
+  "limits": {
+    "allow_binary_files": true,
+    "thin_ipfs_assets": false
+  },
+  "notes": "Fat CDN repo: embed JS chunks + relay_runtime WASM are hosted git binaries (not IPFS). GitLab clevertree/relay-web-assets is private; catalog sync uses mesh git:// until forge is public or nodes have credentials."
 }
