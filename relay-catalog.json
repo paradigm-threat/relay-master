@@ -17,7 +17,7 @@
     },
     "paradigm-threat-files": {
       "url": "https://gitlab.com/clevertree/paradigm-threat-files.git",
-      "relayRootCommit": "c9dcbc487c8307735e03877eb94bd16091440d8a",
+      "relayRootCommit": "ea1e4eed76ddcbe0825a9dee7c1ad71d651819ef",
       "branch": "main"
     },
     "paradigm-threat-timeline": {
