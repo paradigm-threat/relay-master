@@ -9,6 +9,8 @@
   "publish_origin": "iad1.relaygateway.net",
   "signing_keys_source": "repo",
   "domains": [
+    "paradigmthreat.net",
+    "www.paradigmthreat.net",
     "relay.paradigmthreat.net"
   ],
   "limits": {
