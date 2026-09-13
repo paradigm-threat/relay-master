@@ -12,5 +12,9 @@
     "relay.clevertree.net",
     "clevertree.net",
     "www.clevertree.net"
-  ]
+  ],
+  "limits": {
+    "allow_binary_files": true,
+    "thin_ipfs_assets": false
+  }
 }
