@@ -40,5 +40,5 @@
 [submodule "fan-edits"]
 	path = repos/fan-edits
 	url = git@gitlab.com:clevertree/fan-edits.git
-	relayRootCommit = 48a63c4b0d5fee53007193dcde3002b5cf76cc7e
+	relayRootCommit = 48ae7bf7ef311c923c6e9dfb348c2ea3393db880
 	branch = main
