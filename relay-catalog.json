@@ -7,7 +7,7 @@
     },
     "fan-edits": {
       "url": "https://gitlab.com/clevertree/fan-edits.git",
-      "relayRootCommit": "6dd8c4f80c1eaaeffb0cb492d6e35af1b3606fb7",
+      "relayRootCommit": "9a1dff8945c4b987331708115631d551055dbac7",
       "branch": "main"
     },
     "ff-story": {
