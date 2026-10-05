@@ -1,0 +1,20 @@
+{
+  "schema": "relay.catalog-repo.v1",
+  "repo": "fan-edits",
+  "description": "Flashback Repository — personal fan-edit library over thin IPFS media (own the original).",
+  "tier": "primary",
+  "forge_url": "https://gitlab.com/clevertree/fan-edits.git",
+  "relay_root_commit": "fb8ffdac0a1d54b93db18bf380c86df7910ec01a",
+  "publish_branch": "main",
+  "publish_origin": "iad1.relaygateway.net",
+  "signing_keys_source": "repo",
+  "domains": [
+    "flashbackrepository.org",
+    "www.flashbackrepository.org"
+  ],
+  "limits": {
+    "allow_binary_files": false,
+    "thin_ipfs_assets": true
+  },
+  "notes": "Thin IPFS video library. Parked at flashbackrepository.org. Logical MKVs gitignored; .relay/assets/*.ipfs + assets.manifest.json in git."
+}

@@ -37,3 +37,8 @@
 	url = git@gitlab.com:clevertree/relay-web-assets.git
 	branch = release
 	relayRootCommit = 9bd8ff72d47be26dcde3c97f475ff7dcef084e40
+[submodule "fan-edits"]
+	path = repos/fan-edits
+	url = git@gitlab.com:clevertree/fan-edits.git
+	relayRootCommit = fb8ffdac0a1d54b93db18bf380c86df7910ec01a
+	branch = main

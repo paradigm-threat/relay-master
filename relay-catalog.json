@@ -5,6 +5,11 @@
       "relayRootCommit": "f6d069dc29cdbfedb33b0b8d6af1b0cbc3866c94",
       "branch": "release"
     },
+    "fan-edits": {
+      "url": "https://gitlab.com/clevertree/fan-edits.git",
+      "relayRootCommit": "fb8ffdac0a1d54b93db18bf380c86df7910ec01a",
+      "branch": "main"
+    },
     "ff-story": {
       "url": "https://gitlab.com/clevertree/ff-story.git",
       "relayRootCommit": "bff49f45e1d84d64712ccb0e99b2cda93a4fc7f1",
