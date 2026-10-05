@@ -1,10 +1,10 @@
 {
   "schema": "relay.catalog-repo.v1",
   "repo": "fan-edits",
-  "description": "Flashback Repository — personal fan-edit library over thin IPFS media (own the original).",
+  "description": "Flashback Repository \u2014 personal fan-edit library over thin IPFS media (own the original).",
   "tier": "primary",
   "forge_url": "https://gitlab.com/clevertree/fan-edits.git",
-  "relay_root_commit": "fb8ffdac0a1d54b93db18bf380c86df7910ec01a",
+  "relay_root_commit": "f6e751af17a21ff4018c3f6d558404aa24798ae4",
   "publish_branch": "main",
   "publish_origin": "iad1.relaygateway.net",
   "signing_keys_source": "repo",
