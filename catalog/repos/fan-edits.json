@@ -4,7 +4,7 @@
   "description": "Flashback Repository \u2014 personal fan-edit library over thin IPFS media (own the original).",
   "tier": "primary",
   "forge_url": "https://gitlab.com/clevertree/fan-edits.git",
-  "relay_root_commit": "e1508b2a0a42e49e1f32fe3ffe88245bd6c5f7ab",
+  "relay_root_commit": "79957fa94ddc9215ca75c959756c0b6956b3105d",
   "publish_branch": "main",
   "publish_origin": "iad1.relaygateway.net",
   "signing_keys_source": "repo",
@@ -29,7 +29,8 @@
   },
   "limits": {
     "allow_binary_files": false,
-    "thin_ipfs_assets": true
+    "thin_ipfs_assets": true,
+    "max_ipfs_bytes": 21474836480
   },
-  "notes": "Thin IPFS video library. Parked at flashbackrepository.org. Logical MKVs gitignored; .relay/assets/*.ipfs + assets.manifest.json in git. Public board on branch comments (.relay/comments/); code drafts on dev (unsigned)."
+  "notes": "Thin IPFS video library. Parked at flashbackrepository.org. Masters are HEVC MKV with embedded subs; theater default is external player stream (VLC). Pin budget max_ipfs_bytes=20GiB \u2014 Now Showing titles only. Board on comments; drafts on dev."
 }
