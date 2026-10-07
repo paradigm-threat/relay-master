@@ -4,7 +4,7 @@
   "description": "Flashback Repository \u2014 personal fan-edit library over thin IPFS media (own the original).",
   "tier": "primary",
   "forge_url": "https://gitlab.com/clevertree/fan-edits.git",
-  "relay_root_commit": "8317d2182f231c4f53e330843e412c46a3829a1a",
+  "relay_root_commit": "f380dfccbdf82cbaa749eb13ea3731db7c30bb77",
   "publish_branch": "main",
   "publish_origin": "iad1.relaygateway.net",
   "signing_keys_source": "repo",
