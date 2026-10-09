@@ -28,9 +28,9 @@
     }
   },
   "limits": {
-    "allow_binary_files": false,
+    "allow_binary_files": true,
     "thin_ipfs_assets": true,
     "max_ipfs_bytes": 21474836480
   },
-  "notes": "Thin IPFS video library. Parked at flashbackrepository.org. Masters are HEVC MKV with embedded subs; theater default is external player stream (VLC). Pin budget max_ipfs_bytes=20GiB \u2014 Now Showing titles only. Board on comments; drafts on dev."
+  "notes": "Thin IPFS video library. Parked at flashbackrepository.org. Masters are HEVC MKV with embedded subs; theater default is external player stream (VLC). Pin budget max_ipfs_bytes=20GiB \u2014 Now Showing titles only. Board on comments; drafts on dev. Temporary allow_binary_files for downloads/flashback.apk tip publish."
 }
