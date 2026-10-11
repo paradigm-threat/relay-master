@@ -30,7 +30,8 @@
   "limits": {
     "allow_binary_files": false,
     "thin_ipfs_assets": true,
-    "max_ipfs_bytes": 21474836480
+    "fleet_pin_ipfs": false,
+    "max_ipfs_bytes": 0
   },
-  "notes": "Thin IPFS video library. Parked at flashbackrepository.org. Masters are HEVC MKV with embedded subs; theater default is external player stream (VLC). Pin budget max_ipfs_bytes=20GiB \u2014 Now Showing titles only. Board on comments; drafts on dev."
+  "notes": "Thin IPFS catalog only (stubs + manifest). Fleet does not pin or disk-cache feature MKVs — APK/browser pull CIDs from the swarm. Now showing = manual host upload. Board on comments; drafts on dev."
 }
